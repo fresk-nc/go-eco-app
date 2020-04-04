@@ -40,17 +40,19 @@ func main() {
 									address := readStringFromStdin("Введите адрес: ", func(text string) bool {
 										return len(text) > 0
 									})
-									status := readStringFromStdin("Введите статус: ", func(text string) bool {
-										return len(text) > 0
+									fmt.Println("1. Активная")
+									fmt.Println("2. Закрытая")
+									statusIndex := readIntFromStdin("Введите номер статуса свалки: ", func(i int) bool {
+										return i == 1 || i == 2
 									})
-									date := readStringFromStdin("Введите дату(dd.mm.yyyy): ", func(text string) bool {
+									date := readStringFromStdin("Введите дату обнаружения(формат dd.mm.yyyy): ", func(text string) bool {
 										_, err := time.Parse("02.01.2006", text)
 
 										return err == nil
 									})
 									landfill := landfill{
 										address: address,
-										status:  status,
+										active:  statusIndex == 1,
 										date:    date,
 									}
 									landfills = addLandfill(landfills, landfill)
@@ -170,7 +172,8 @@ func main() {
 			menuItem{
 				title: "Статистика",
 				action: func() bool {
-					fmt.Println("Количество незаконных свалок:", len(landfills))
+					fmt.Println("Количество активных незаконных свалок:", landfills.countOfActive())
+					fmt.Println("Количество закрытых незаконных свалок:", landfills.countOfNotActive())
 					fmt.Println("Количество пунктов переработки отходов:", len(recyclingPoints))
 					return true
 				},

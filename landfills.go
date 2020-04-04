@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -34,9 +35,16 @@ func newLandfillsFromFile(filename string) landfills {
 	landfills := landfills{}
 
 	for _, record := range records {
+		b, err := strconv.ParseBool(record[1])
+
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+
 		landfill := landfill{
 			address: record[0],
-			status:  record[1],
+			active:  b,
 			date:    record[2],
 		}
 
@@ -87,4 +95,28 @@ func (l landfills) saveToFile(filename string) {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
+}
+
+func (l landfills) countOfActive() int {
+	count := 0
+
+	for _, item := range l {
+		if item.active {
+			count = count + 1
+		}
+	}
+
+	return count
+}
+
+func (l landfills) countOfNotActive() int {
+	count := 0
+
+	for _, item := range l {
+		if !item.active {
+			count = count + 1
+		}
+	}
+
+	return count
 }

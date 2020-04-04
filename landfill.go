@@ -1,19 +1,27 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type landfill struct {
 	address string
-	status  string
+	active  bool
 	date    string
 }
 
 func (l *landfill) toSlice() []string {
-	return []string{l.address, l.status, l.date}
+	return []string{l.address, strconv.FormatBool(l.active), l.date}
 }
 
 func (l *landfill) print() {
+	status := "Активная"
+	if !l.active {
+		status = "Закрытая"
+	}
+
 	fmt.Println("Адресс:", l.address)
-	fmt.Println("Статус:", l.status)
+	fmt.Println("Статус:", status)
 	fmt.Println("Дата обнаружения:", l.date)
 }
