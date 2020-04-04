@@ -45,7 +45,7 @@ func main() {
 									statusIndex := readIntFromStdin("Введите номер статуса свалки: ", func(i int) bool {
 										return i == 1 || i == 2
 									})
-									date := readStringFromStdin("Введите дату обнаружения(формат dd.mm.yyyy): ", func(text string) bool {
+									date := readStringFromStdin("Введите дату обнаружения(формат дд.мм.гггг): ", func(text string) bool {
 										_, err := time.Parse("02.01.2006", text)
 
 										return err == nil
